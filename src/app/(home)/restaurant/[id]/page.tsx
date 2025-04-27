@@ -1,34 +1,48 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, FloatingLabel } from "flowbite-react";
-import {
-  usePathname,
-  useRouter,
-  useSearchParams,
-  useParams,
-} from "next/navigation";
-import { getRestaurantById } from "@/api/api";
+import { useRouter, useParams } from "next/navigation";
+import { getRestaurantById, getUserById } from "@/api/api";
 import { Restaurant } from "@/types/restaurant";
+import { VerifyRestaurantModel } from "@/components/VerifyRestaurantModal";
+import { User } from "@/types/user";
+import { RejectRestaurantModel } from "@/components/RejectRestaurantModel";
 
 function page() {
   const router = useRouter();
   const { id } = useParams(); // Get the restaurant ID from the URL
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null); // State to hold restaurant data
+  const [user, setUser] = useState<User | null>(null); // State to hold user data
 
   useEffect(() => {
-    console.log("Restaurant ID:", id); // Log the restaurant ID for debugging
-    const fetchRestaurantByID = async () => {
-      if (typeof id === "string") {
-        const data = await getRestaurantById(id);
-        setRestaurant(data); // Set the restaurant data in state
-      } else {
-        alert("Invalid restaurant ID");
-        router.push("/restaurant"); // Redirect to the restaurant page if ID is invalid
+    const fetchData = async () => {
+      try {
+        if (typeof id === "string") {
+          console.log("Restaurant ID:", id); // Log the restaurant ID for debugging
+
+          // Fetch restaurant data
+          const restaurantData = await getRestaurantById(id);
+          setRestaurant(restaurantData);
+
+          // Fetch user data if user_id is available
+          if (restaurantData?.user_id) {
+            const userData = await getUserById(restaurantData.user_id);
+            console.log("User Data:", userData); // Log the user data for debugging
+            setUser(userData);
+          }
+        } else {
+          alert("Invalid restaurant ID");
+          router.push("/restaurant"); // Redirect to the restaurant page if ID is invalid
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Failed to fetch restaurant or user data.");
       }
     };
-    fetchRestaurantByID();
-  }, []);
+
+    fetchData();
+  }, [id]);
 
   return (
     <div className="overflow-scroll">
@@ -54,7 +68,11 @@ function page() {
           </i>
         </div>
         <div className="flex flex-wrap gap-4 justify-center">
+          {/* Restaurant Information Card */}
           <Card className="flex-1 mt-2 max-w-xl">
+            <div className="text-2xl font-bold mb-2 dark:text-white">
+              Restaurant Information
+            </div>
             Name
             <FloatingLabel
               className="max-w-md dark:bg-transparent bg-transparent text-md"
@@ -87,7 +105,7 @@ function page() {
               color="success"
               disabled
             />
-            Cusine Type
+            Cuisine Type
             <FloatingLabel
               className="max-w-md dark:bg-transparent bg-transparent text-md"
               variant="outlined"
@@ -104,23 +122,63 @@ function page() {
               disabled
             />
           </Card>
-          <Card className="mt-2 max-w-xl">
-            Attached Image
+
+          {/* User Information Card */}
+          <Card className="flex-1 mt-2 max-w-xl items-start justify-start">
+            <div className="text-2xl font-bold mb-2 dark:text-white">
+              User Information
+            </div>
+            Full name
+            <FloatingLabel
+              className="max-w-md overflow-x-auto dark:bg-transparent bg-transparent text-md"
+              variant="outlined"
+              label={user?.fullName ?? ""}
+              disabled
+            />
+            Email
+            <FloatingLabel
+              className="max-w-md overflow-x-auto dark:bg-transparent bg-transparent text-md"
+              variant="outlined"
+              label={user?.email ?? ""}
+              disabled
+            />
+            Contact Number
+            <FloatingLabel
+              className="max-w-md overflow-x-auto dark:bg-transparent bg-transparent text-md"
+              variant="outlined"
+              label={user?.phoneNumber ?? ""}
+              disabled
+            />
+            <div className="py-55"></div>
+          </Card>
+
+          {/* Attached Image Card */}
+          <Card className="flex-1 mt-2 max-w-xl items-start justify-start">
+            <div className="text-2xl font-bold mb-2 dark:text-white">
+              Attached Image
+            </div>
             <img
-              width={500}
-              height={100}
               src={restaurant?.image_reference}
               alt="Restaurant"
+              width={500}
+              height={500}
             />
+            <div className="py-10"></div>
           </Card>
         </div>
         <Card className="mt-5">
-          <Button color="green">
-            Verify Restaurant
-          </Button>
-          <Button color="red">
-            Reject
-          </Button>
+          {id && typeof id === "string" && (
+            <VerifyRestaurantModel
+              restaurantId={id}
+              userEmail={user?.email ?? ""}
+            />
+          )}
+          {id && typeof id === "string" && (
+            <RejectRestaurantModel
+              restaurantId={id}
+              userEmail={user?.email ?? ""}
+            />
+          )}
         </Card>
       </div>
     </div>
