@@ -2,6 +2,7 @@
 
 import {
   Sidebar,
+  SidebarCollapse,
   SidebarItem,
   SidebarItemGroup,
   SidebarItems,
@@ -13,13 +14,17 @@ import { BiSolidDashboard } from "react-icons/bi";
 import { BsFillFilePersonFill } from "react-icons/bs";
 import { FaShop } from "react-icons/fa6";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
+import { IoCar } from "react-icons/io5";
+import { GoPersonFill } from "react-icons/go";
+
 
 export function SideBarComponent() {
   const [analytics, setAnalytics] = useState(false);
   const [dashboard, setDashboard] = useState(false);
-  const [customer, setCustomer] = useState(false);
+  const [account, setAccount] = useState(false);
   const [restaurant, setRestaurant] = useState(false);
   const [transactions, setTransactions] = useState(false);
+  const [delivery, setDelivery] = useState(false);
 
   const getLocation = () => {
     const path = window.location.pathname.split("/").pop();
@@ -27,12 +32,14 @@ export function SideBarComponent() {
       setAnalytics(true);
     } else if (path === "dashboard") {
       setDashboard(true);
-    } else if (path === "customer") {
-      setCustomer(true);
+    } else if (path === "accounts") {
+      setAccount(true);
     } else if (path === "restaurant") {
       setRestaurant(true);
     } else if (path === "transactions") {
       setTransactions(true);
+    } else if (path === "delivery") {
+      setDelivery(true);
     }
   };
 
@@ -72,13 +79,24 @@ export function SideBarComponent() {
           >
             Dashboard
           </SidebarItem>
+
+         <SidebarCollapse label="Accounts" icon={BsFillFilePersonFill}>
           <SidebarItem
-            href="/customer"
-            icon={BsFillFilePersonFill}
-            active={customer}
+            href="/accounts"
+            icon={GoPersonFill }
+            active={account}
           >
-            Customers
+            All accounts
           </SidebarItem>
+          <SidebarItem
+            href="/delivery"
+            icon={IoCar }
+            active={delivery}
+          >
+            Delivery Drivers
+          </SidebarItem>
+
+          
           <SidebarItem
             href="/restaurant"
             icon={FaShop}
@@ -86,6 +104,8 @@ export function SideBarComponent() {
           >
             Restaurants
           </SidebarItem>
+        </SidebarCollapse>
+          
           <SidebarItem
             href="/transactions"
             icon={FaMoneyCheckDollar}

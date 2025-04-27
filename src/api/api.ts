@@ -31,8 +31,8 @@ async function getRestaurantById(id: string) {
 
 async function verifyRestaurant(id: string) {
   try {
-    const response = await api.patch(`/restaurant/verify/${id}`, {
-      is_verified: true,
+    const response = await api.patch(`/restaurant/${id}/verification`, {
+      isVerified: true,
     });
     return response.data.data;
   } catch (error) {
@@ -61,7 +61,7 @@ async function sendConfirmationEmail(email: string) {
   }
 }
 
-async function sendRejectionEmail(email: string , reason: string) {
+async function sendRejectionEmail(email: string, reason: string) {
   try {
     const response = await api.post("/email/reject", { email, reason });
     return response.data;
@@ -73,12 +73,38 @@ async function sendRejectionEmail(email: string , reason: string) {
 
 async function unverifyRestaurant(id: string) {
   try {
-    const response = await api.patch(`/restaurant/verify/${id}`, {
-      is_verified: false,
+    const response = await api.patch(`/restaurant/${id}/verification`, {
+      isVerified: false,
     });
     return response.data.data;
   } catch (error) {
     console.error("Error verifying restaurant:", error);
+    throw error;
+  }
+}
+
+async function getAllUsers() {
+  try {
+    const response = await api.get("/user");
+    return response.data.users; //return users array
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+async function getAllDeliveryDrivers() {
+  try {
+    const response = await api.get("/user/delivery_personnel");
+
+    const verified = response.data.users.filter((user: any) => user.isVerified);
+    const nonVerified = response.data.users.filter(
+      (user: any) => !user.isVerified
+    );
+
+    return { verified, nonVerified };
+  } catch (error) {
+    console.error("Error fetching delivery drivers:", error);
     throw error;
   }
 }
@@ -91,4 +117,6 @@ export {
   sendConfirmationEmail,
   sendRejectionEmail,
   unverifyRestaurant,
+  getAllUsers,
+  getAllDeliveryDrivers,
 };
