@@ -109,6 +109,32 @@ async function getAllDeliveryDrivers() {
   }
 }
 
+async function getDriverVehicleByUserId(userId: string) {
+  try {
+    const response = await api.get(`/vehicles/driver/${userId}`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching driver vehicle data:", error);
+    throw error;
+  }
+}
+
+async function updateDriverVerification(
+  userId: string,
+  isVerified: boolean
+) {
+  try {
+    const response = await api.patch(`/user/verify`, {
+      userId,
+      isVerified,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("Error updating driver verification status:", error);
+    throw error;
+  }
+}
+
 export {
   getAllRestaurants,
   getRestaurantById,
@@ -119,4 +145,6 @@ export {
   unverifyRestaurant,
   getAllUsers,
   getAllDeliveryDrivers,
+  getDriverVehicleByUserId,
+  updateDriverVerification
 };
