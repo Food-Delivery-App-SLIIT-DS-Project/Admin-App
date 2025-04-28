@@ -12,10 +12,11 @@ import {
 import { IoIosSearch } from "react-icons/io";
 import React, { useEffect, useState } from "react";
 import { getAllRestaurants } from "@/api/api";
+import { Restaurant } from "@/types/restaurant";
 
-function page() {
-  const [verifiedRestaurants, setVerifiedRestaurants] = useState<any[]>([]);
-  const [nonVerifiedRestaurants, setNonVerifiedRestaurants] = useState<any[]>(
+function Page() {
+  const [verifiedRestaurants, setVerifiedRestaurants] = useState<Restaurant[]>([]);
+  const [nonVerifiedRestaurants, setNonVerifiedRestaurants] = useState<Restaurant[]>(
     []
   );
 
@@ -39,11 +40,12 @@ function page() {
   }, []);
 
   // Filter based on the respective search query
-  const filterVerifiedRestaurants = (restaurants: any[]) => {
+  const filterVerifiedRestaurants = (restaurants: Restaurant[]) => {
     return restaurants.filter((restaurant) => {
-      const nameMatch = restaurant.restaurant_name
-        .toLowerCase()
-        .includes(verifiedSearchQuery.toLowerCase());
+      const nameMatch = restaurant.restaurant_name &&
+        restaurant.restaurant_name
+          .toLowerCase()
+          .includes(verifiedSearchQuery.toLowerCase());
       const phoneMatch = restaurant.phone
         .toLowerCase()
         .includes(verifiedSearchQuery.toLowerCase());
@@ -51,9 +53,10 @@ function page() {
     });
   };
 
-  const filterNonVerifiedRestaurants = (restaurants: any[]) => {
+  const filterNonVerifiedRestaurants = (restaurants: Restaurant[]) => {
     return restaurants.filter((restaurant) => {
-      const nameMatch = restaurant.restaurant_name
+      const nameMatch = restaurant.restaurant_name &&
+        restaurant.restaurant_name
         .toLowerCase()
         .includes(nonVerifiedSearchQuery.toLowerCase());
       const phoneMatch = restaurant.phone
@@ -189,4 +192,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

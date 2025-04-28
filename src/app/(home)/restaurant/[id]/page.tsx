@@ -9,7 +9,7 @@ import { VerifyRestaurantModel } from "@/components/VerifyRestaurantModal";
 import { User } from "@/types/user";
 import { RejectRestaurantModel } from "@/components/RejectRestaurantModel";
 
-function page() {
+function Page() {
   const router = useRouter();
   const { id } = useParams(); // Get the restaurant ID from the URL
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null); // State to hold restaurant data
@@ -158,7 +158,7 @@ function page() {
               Attached Image
             </div>
             <img
-              src={restaurant?.image_reference}
+              src={restaurant?.image_reference || "/placeholder.png"}
               alt="Restaurant"
               width={500}
               height={500}
@@ -185,4 +185,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../css/globals.css";
-import {ThemeModeScript } from "flowbite-react";
+import { ThemeModeScript } from "flowbite-react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +16,6 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <head>
         <ThemeModeScript />
-    
       </head>
       <body>{children}</body>
     </html>

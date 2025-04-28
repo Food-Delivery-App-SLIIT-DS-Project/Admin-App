@@ -18,7 +18,7 @@ import {
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-function page() {
+function Page() {
   const { id, transactionId } = useParams<{
     id: string;
     transactionId: string;
@@ -194,4 +194,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

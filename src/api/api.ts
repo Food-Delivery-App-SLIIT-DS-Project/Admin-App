@@ -1,14 +1,16 @@
+import { Restaurant } from "@/types/restaurant";
 import api from "./axios-instance"; // Adjust the import path as necessary
+import { User } from "@/types/user";
 
 async function getAllRestaurants() {
   try {
     const response = await api.get("/restaurant");
 
     const verified = response.data.data.filter(
-      (restaurant: any) => restaurant.is_verified
+      (restaurant: Restaurant) => restaurant.is_verified
     );
     const nonVerified = response.data.data.filter(
-      (restaurant: any) => !restaurant.is_verified
+      (restaurant: Restaurant) => !restaurant.is_verified
     );
 
     return { verified, nonVerified };
@@ -107,9 +109,9 @@ async function getAllDeliveryDrivers() {
   try {
     const response = await api.get("/user/delivery_personnel");
 
-    const verified = response.data.users.filter((user: any) => user.isVerified);
+    const verified = response.data.users.filter((user: User) => user.isVerified);
     const nonVerified = response.data.users.filter(
-      (user: any) => !user.isVerified
+      (user: User) => !user.isVerified
     );
 
     return { verified, nonVerified };

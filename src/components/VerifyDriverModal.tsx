@@ -1,6 +1,6 @@
 "use client";
 
-import { sendConfirmationEmail, sendDriverConfirmationEmail, updateDriverVerification } from "@/api/api";
+import { sendDriverConfirmationEmail, updateDriverVerification } from "@/api/api";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";

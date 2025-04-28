@@ -15,6 +15,7 @@ import {
   TableRow,
   TextInput,
 } from "flowbite-react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
@@ -65,7 +66,7 @@ function Page() {
         <div className="flex flex-wrap w-full">
           <div className="flex">
             {/* Light mode image */}
-            <img
+            <Image
               src="/User_icon_LightMode.svg"
               alt="User Icon"
               className="mx-10 dark:hidden"
@@ -74,7 +75,7 @@ function Page() {
             />
 
             {/* Dark mode image */}
-            <img
+            <Image
               src="/User_icon_DarkMode.svg"
               alt="User Icon"
               className="mx-10 hidden dark:block"

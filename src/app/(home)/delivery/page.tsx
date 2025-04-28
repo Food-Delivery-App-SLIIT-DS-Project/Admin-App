@@ -12,10 +12,11 @@ import {
 import { IoIosSearch } from "react-icons/io";
 import React, { useEffect, useState } from "react";
 import { getAllDeliveryDrivers } from "@/api/api";
+import { User } from "@/types/user";
 
 function Page() {
-  const [verifiedDrivers, setVerifiedDrivers] = useState<any[]>([]);
-  const [nonVerifiedDrivers, setNonVerifiedDrivers] = useState<any[]>([]);
+  const [verifiedDrivers, setVerifiedDrivers] = useState<User[]>([]);
+  const [nonVerifiedDrivers, setNonVerifiedDrivers] = useState<User[]>([]);
 
   // Separate search state for Verified and Non-Verified drivers
   const [verifiedSearchQuery, setVerifiedSearchQuery] = useState("");
@@ -37,7 +38,7 @@ function Page() {
   }, []);
 
   // Filter based on the respective search query
-  const filterVerifiedDrivers = (drivers: any[]) => {
+  const filterVerifiedDrivers = (drivers: User[]) => {
     return drivers.filter((driver) => {
       const nameMatch = driver.fullName
         .toLowerCase()
@@ -49,7 +50,7 @@ function Page() {
     });
   };
 
-  const filterNonVerifiedDrivers = (drivers: any[]) => {
+  const filterNonVerifiedDrivers = (drivers: User[]) => {
     return drivers.filter((driver) => {
       const nameMatch = driver.fullName
         .toLowerCase()

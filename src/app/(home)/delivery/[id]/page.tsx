@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, FloatingLabel } from 'flowbite-react';
 import { useParams } from 'next/navigation';
-import { getDriverVehicleByUserId, getUserById, updateDriverVerification } from '@/api/api';
+import { getDriverVehicleByUserId, getUserById } from '@/api/api';
 import { User } from '@/types/user';
 import { Vehicle } from '@/types/vehicle';
 import { VerifyDriverModal } from '@/components/VerifyDriverModal';

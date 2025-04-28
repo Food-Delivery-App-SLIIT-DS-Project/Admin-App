@@ -5,7 +5,7 @@ import { AiOutlineShop } from "react-icons/ai";
 import { IoCarOutline } from "react-icons/io5";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 
-function page() {
+function Page() {
   return (
     <div className="overflow-y-auto">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -95,4 +95,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
