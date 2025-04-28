@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  sendConfirmationEmail,
-  sendRejectionEmail,
-  unverifyRestaurant,
-  updateDriverVerification,
-  verifyRestaurant,
-} from "@/api/api";
+import { sendDriverRejectionEmail, sendRejectionEmail, updateDriverVerification } from "@/api/api";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -34,7 +28,7 @@ export function RejectDriverModel({
     setLoading(true);
     const response = await updateDriverVerification(userID, false); // Update verification status to false
     if (response) {
-      const emailResponse = await sendRejectionEmail(userEmail, reason);
+      const emailResponse = await sendDriverRejectionEmail(userEmail, reason);
       if (emailResponse.sent === true) {
         console.log("Restaurant verified and email sent !");
         setOpenModal(false); // Close the modal after verification

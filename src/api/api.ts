@@ -176,6 +176,47 @@ async function getOrderDetailsById(orderId:string) {
   }
 }
 
+async function sendDriverConfirmationEmail(email: string) {
+  try {
+    const response = await api.post("/email/driver-confirm", { email });
+    return response.data;
+  } catch (error) {
+    console.error("Error sending confirmation email:", error);
+    throw error;
+  }
+}
+
+async function sendDriverRejectionEmail(email: string, reason: string) {
+  try {
+    const response = await api.post("/email/driver-reject", { email, reason });
+    return response.data;
+  } catch (error) {
+    console.error("Error sending rejection email:", error);
+    throw error;
+  }
+}
+
+async function sendRefundEmail(email: string, reason: string) {
+  try {
+    const response = await api.post("/email/refund-confirm", { email, reason });
+    return response.data;
+  } catch (error) {
+    console.error("Error sending refund email:", error);
+    throw error;
+  }
+}
+
+async function paymentRefund(paymentId: string) {
+  try {
+    const response = await api.post(`/payment/refund/${paymentId}`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error processing payment refund:", error);
+    throw error;
+  }
+}
+
+
 export {
   getAllRestaurants,
   getRestaurantById,
@@ -191,5 +232,9 @@ export {
   getCustomers,
   getPaymentsOfUser,
   getPaymentById,
-  getOrderDetailsById
+  getOrderDetailsById,
+  sendDriverConfirmationEmail,
+  sendDriverRejectionEmail,
+  sendRefundEmail,
+  paymentRefund,
 };

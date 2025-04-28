@@ -1,46 +1,51 @@
 "use client";
 
-import { sendConfirmationEmail, sendDriverConfirmationEmail, updateDriverVerification } from "@/api/api";
+import { getUserById, paymentRefund, sendRefundEmail } from "@/api/api";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Spinner } from "flowbite-react";
 
-interface VerifyDriverModelProps {
+interface RefundModelProps {
   userID: string;
-  userEmail: string;
+  paymentId: string;
 }
 
-export function VerifyDriverModal({
-  userID,
-  userEmail
-}: VerifyDriverModelProps) {
-
+export function RefundModal({ userID, paymentId }: RefundModelProps) {
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false); // State to manage loading status
+  const [reason, setReason] = useState(""); // State to manage rejection reason
 
   const handleVerifyRestaurant = async () => {
+    if (reason.trim() === "" || reason === undefined || reason === null) {
+      alert("Please enter a reason for rejection.");
+      return;
+    }
     // Add your verification logic here
     setLoading(true);
-    const response = await updateDriverVerification(userID, true); // Update verification status to true
+    const response = await paymentRefund(paymentId); // Update verification status to false
     if (response) {
-      const emailResponse = await sendDriverConfirmationEmail(userEmail);
-      if (emailResponse.sent === true) {
-        console.log("Driver verified and email sent !");
-        setOpenModal(false); // Close the modal after verification
-        window.location.reload();
+      const getUser = await getUserById(userID);
+
+      if (getUser) {
+        const emailResponse = await sendRefundEmail(getUser.email, reason);
+        if (emailResponse.sent === true) {
+          setOpenModal(false); // Close the modal after verification
+          window.location.reload();
+        }
+      } else {
+        alert("An error occured while sending the email, Payment Refunded !");
       }
-    }
-    else {
-      console.log("Error verifying driver:", response.data.message);
+    } else {
+      alert("An error occured refunding payment, email not sent !");
       setLoading(false); // Stop loading if there's an error
     }
   };
 
   return (
     <>
-      <Button color="green" onClick={() => setOpenModal(true)}>
-        VERIFY
+      <Button color="red" onClick={() => setOpenModal(true)}>
+        Refund Payment
       </Button>
       <Modal
         show={openModal}
@@ -59,11 +64,19 @@ export function VerifyDriverModal({
               <div>
                 <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                  Are you sure you want to verify this driver ?
+                  Are you sure you want to refund this payment ?
                 </h3>
                 <p className="mb-5 text-md font-normal text-red-500 dark:text-gray-400">
                   This action cannot be undone.
                 </p>
+
+                <textarea
+                  className="w-full mb-5 p-2 border border-gray-300 rounded-md"
+                  placeholder="Enter the reason for refund"
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  required
+                ></textarea>
                 <div className="flex justify-center gap-4">
                   <Button color="blue" onClick={() => handleVerifyRestaurant()}>
                     Confirm

@@ -54,7 +54,7 @@ function Page() {
   );
 
   return (
-    <div>
+    <div className=" overflow-auto">
       <div className="text-xl font-bold dark:text-white">Customer Account</div>
       <div className="mb-4 mt-4 flex items-center">
         <span className="text-lg font-semibold dark:text-white">
