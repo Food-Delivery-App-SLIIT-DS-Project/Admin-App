@@ -11,7 +11,7 @@ import {
 } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import { getAllUsers } from "@/api/api";
+import {getCustomers } from "@/api/api";
 import { User } from "@/types/user";
 
 function Page() {
@@ -23,7 +23,7 @@ function Page() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const userData = await getAllUsers();
+        const userData = await getCustomers();
         setUsers(userData); // Set all users
         setFilteredUsers(userData); // Initialize filtered users
       } catch (error) {
@@ -46,7 +46,7 @@ function Page() {
 
   return (
     <div>
-      <div className="text-xl font-bold dark:text-white">All User Accounts</div>
+      <div className="text-xl font-bold dark:text-white">Customers</div>
       <div className="mb-4 mt-4">
         <TextInput
           icon={IoIosSearch}
@@ -64,7 +64,6 @@ function Page() {
             <TableRow>
               <TableHeadCell>Name</TableHeadCell>
               <TableHeadCell>Contact</TableHeadCell>
-              <TableHeadCell>Role</TableHeadCell>
               <TableHeadCell>Date Created</TableHeadCell>
               <TableHeadCell>
                 <span className="sr-only">VIEW</span>
@@ -81,13 +80,12 @@ function Page() {
                   {user.fullName}
                 </TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
-                <TableCell>{user.role}</TableCell>
                 <TableCell>
                   {new Date(user.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
                   <a
-                    href={`/accounts/${user.userId}`}
+                    href={`/customer/${user.userId}`}
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                   >
                     VIEW

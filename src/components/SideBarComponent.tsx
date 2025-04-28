@@ -2,7 +2,6 @@
 
 import {
   Sidebar,
-  SidebarCollapse,
   SidebarItem,
   SidebarItemGroup,
   SidebarItems,
@@ -11,19 +10,15 @@ import {
 import { useEffect, useState } from "react";
 import { HiChartPie } from "react-icons/hi";
 import { BiSolidDashboard } from "react-icons/bi";
-import { BsFillFilePersonFill } from "react-icons/bs";
 import { FaShop } from "react-icons/fa6";
-import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { IoCar } from "react-icons/io5";
 import { GoPersonFill } from "react-icons/go";
-
 
 export function SideBarComponent() {
   const [analytics, setAnalytics] = useState(false);
   const [dashboard, setDashboard] = useState(false);
-  const [account, setAccount] = useState(false);
+  const [customer, setCustomer] = useState(false);
   const [restaurant, setRestaurant] = useState(false);
-  const [transactions, setTransactions] = useState(false);
   const [delivery, setDelivery] = useState(false);
 
   const getLocation = () => {
@@ -32,12 +27,10 @@ export function SideBarComponent() {
       setAnalytics(true);
     } else if (path === "dashboard") {
       setDashboard(true);
-    } else if (path === "accounts") {
-      setAccount(true);
+    } else if (path === "customer") {
+      setCustomer(true);
     } else if (path === "restaurant") {
       setRestaurant(true);
-    } else if (path === "transactions") {
-      setTransactions(true);
     } else if (path === "delivery") {
       setDelivery(true);
     }
@@ -80,44 +73,18 @@ export function SideBarComponent() {
             Dashboard
           </SidebarItem>
 
-         <SidebarCollapse label="Accounts" icon={BsFillFilePersonFill}>
-          <SidebarItem
-            href="/accounts"
-            icon={GoPersonFill }
-            active={account}
-          >
-            All accounts
+          <SidebarItem href="/customer" icon={GoPersonFill} active={customer}>
+            Customer
           </SidebarItem>
-          <SidebarItem
-            href="/delivery"
-            icon={IoCar }
-            active={delivery}
-          >
+          <SidebarItem href="/delivery" icon={IoCar} active={delivery}>
             Delivery Drivers
           </SidebarItem>
 
-          
-          <SidebarItem
-            href="/restaurant"
-            icon={FaShop}
-            active={restaurant}
-          >
+          <SidebarItem href="/restaurant" icon={FaShop} active={restaurant}>
             Restaurants
           </SidebarItem>
-        </SidebarCollapse>
-          
-          <SidebarItem
-            href="/transactions"
-            icon={FaMoneyCheckDollar}
-            active={transactions}
-          >
-            Transactions
-          </SidebarItem>
-          <SidebarItem
-            href="/analytics"
-            icon={HiChartPie}
-            active={analytics}
-          >
+
+          <SidebarItem href="/analytics" icon={HiChartPie} active={analytics}>
             Analytics
           </SidebarItem>
         </SidebarItemGroup>

@@ -93,6 +93,16 @@ async function getAllUsers() {
   }
 }
 
+async function getCustomers() {
+  try {
+    const response = await api.get("/user/customer");
+    return response.data.users; //return users array
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
 async function getAllDeliveryDrivers() {
   try {
     const response = await api.get("/user/delivery_personnel");
@@ -125,12 +135,43 @@ async function updateDriverVerification(
 ) {
   try {
     const response = await api.patch(`/user/verify`, {
-      userId,
-      isVerified,
+      userId:userId,
+      isVerified:isVerified,
     });
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("Error updating driver verification status:", error);
+    throw error;
+  }
+}
+
+
+async function getPaymentsOfUser(userId:string) {
+    try {
+      const response = await api.get(`/payment/user/${userId}`);
+      return response.data.data;
+    } catch (error) {
+      console.error("Error fetching user payments:", error);
+      throw error;
+    }
+}
+
+async function getPaymentById(paymentId:string) {
+  try {
+    const response = await api.get(`/payment/${paymentId}`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching payment data:", error);
+    throw error;
+  }
+}
+
+async function getOrderDetailsById(orderId:string) {
+  try {
+    const response = await api.get(`/order/${orderId}`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching order details:", error);
     throw error;
   }
 }
@@ -146,5 +187,9 @@ export {
   getAllUsers,
   getAllDeliveryDrivers,
   getDriverVehicleByUserId,
-  updateDriverVerification
+  updateDriverVerification,
+  getCustomers,
+  getPaymentsOfUser,
+  getPaymentById,
+  getOrderDetailsById
 };
