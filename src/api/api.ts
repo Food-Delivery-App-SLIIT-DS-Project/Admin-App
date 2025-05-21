@@ -33,7 +33,7 @@ async function getRestaurantById(id: string) {
 
 async function verifyRestaurant(id: string) {
   try {
-    const response = await api.patch(`/restaurant/${id}/verification`, {
+    const response = await api.patch(`/restaurant/verify/${id}`, {
       isVerified: true,
     });
     return response.data.data;
